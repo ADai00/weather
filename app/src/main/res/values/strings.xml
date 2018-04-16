@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">天气预报</string>
+    <string name="data_sources">数据来源：和风天气</string>
+    <string name="select_city">切换城市</string>
+    <string name="manage_city">管理城市</string>
+    <string name="delete_city">删除该城市</string>
+    <string name="city_to_top">置顶城市</string>
+    <string name="today">今天</string>
+    <string name="weather_setting">设置</string>
+    <string name="auto_update">自动更新</string>
+    <string name="auto_update_time">更新间隔</string>
+    <string name="update_time_1">1小时</string>
+    <string name="update_time_2">2小时</string>
+    <string name="update_time_6">6小时</string>
+    <string name="update_time_12">12小时</string>
+    <string name="update_time_24">24小时</string>
+    <string name="setting_cancel">取消</string>
+</resources>

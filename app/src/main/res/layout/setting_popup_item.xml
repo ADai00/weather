@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/white">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/auto_update_time"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:padding="2dp"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <RadioGroup
+                android:id="@+id/update_time_radio_group"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="2dp">
+
+            <RadioButton
+                    android:id="@+id/update_time_radio_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/update_time_1"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:checked="true"/>
+
+            <RadioButton
+                    android:id="@+id/update_time_radio_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/update_time_2"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"/>
+
+            <RadioButton
+                    android:id="@+id/update_time_radio_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/update_time_6"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"/>
+
+            <RadioButton
+                    android:id="@+id/update_time_radio_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/update_time_12"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"/>
+
+            <RadioButton
+                    android:id="@+id/update_time_radio_24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/update_time_24"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"/>
+        </RadioGroup>
+    </RelativeLayout>
+
+    <Button
+            android:id="@+id/update_time_button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@string/setting_cancel"
+            android:textSize="18sp"
+            android:textColor="#009CFD"/>
+
+</LinearLayout>

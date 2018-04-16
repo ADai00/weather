@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/tintgray">
+
+    <include layout="@layout/common_title"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginTop="5dp">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:gravity="center"
+                android:text="@string/auto_update"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
+
+        <Switch
+                android:id="@+id/auto_update_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="on"
+                android:textOff="off"
+                android:gravity="center"
+                android:layout_margin="10dp"
+                android:layout_alignParentRight="true"
+                android:thumb="@drawable/thumb"
+                android:track="@drawable/track"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/setting_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginTop="5dp">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:gravity="center"
+                android:text="@string/auto_update_time"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
+
+        <TextView
+                android:id="@+id/auto_update_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp"
+                android:layout_alignParentRight="true"
+                android:text="@string/update_time_1"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:drawableRight="@drawable/icon_enter"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
