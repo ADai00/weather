@@ -418,6 +418,9 @@
     <color name="blue">#0000FF</color>
     <!-- 蓝色 -->
 
+    <color name="titleblue">#009CFD</color>
+    <!--用于title蓝色-->
+
     <color name="mediumblue">#0000CD</color>
     <!-- 中兰色 -->
 
