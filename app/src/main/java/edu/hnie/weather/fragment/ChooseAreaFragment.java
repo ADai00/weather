@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import edu.hnie.weather.ManageCityActivity;
 import edu.hnie.weather.R;
 import edu.hnie.weather.WeatherActivity;
 import edu.hnie.weather.dao.City;
@@ -60,8 +61,10 @@ public class ChooseAreaFragment extends Fragment {
         chooseAreaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //如果当前等级
                 if (currentLevel == LEVEL_PROVINCE) {
                     selectedProvince = provinceList.get(position);
+                    //遍历当前省份下面的城市
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
@@ -82,34 +85,63 @@ public class ChooseAreaFragment extends Fragment {
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     queryProvinces();
+                } else if(currentLevel == LEVEL_PROVINCE){
+                    Intent intent = new Intent(getActivity(),ManageCityActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
         queryProvinces();
     }
 
+    /**
+     * 遍历全国所有的省份
+     */
     private void queryProvinces() {
+        boolean flag = getActivity().getIntent().getBooleanExtra("flag", false);
+        //设置标题
         chooseAreaTextView.setText("中国");
-        backButton.setVisibility(View.GONE);
+        if (flag) {
+            //将返回按钮显示
+            backButton.setVisibility(View.VISIBLE);
+        }else {
+            //将返回按钮隐藏
+            backButton.setVisibility(View.GONE);
+        }
+        //查找数据库
         provinceList = DataSupport.findAll(Province.class);
+        //判断查找到的省份的数据的大小是否大于0
         if (provinceList.size() > 0) {
+            //将用来显示省市数据的List清空
             dataList.clear();
+            //遍历省份的list集合
             for (Province province : provinceList) {
+                //将省份的名字添加到dataList集合中
                 dataList.add(province.getProvinceName());
             }
+            //
             adapter.notifyDataSetChanged();
+            //设置ListView的选择位置为0
             chooseAreaListView.setSelection(0);
+            //设置当前的等级
             currentLevel = LEVEL_PROVINCE;
-        } else {
+        } else {//判断查找到的省份的数据的大小等于0
+            //访问API
             String address = "http://guolin.tech/api/china";
+            //调用该方法访问API
             queryFromServer(address, "province");
         }
     }
 
 
+    //
     private void queryCities() {
+        // 设置标题
         chooseAreaTextView.setText(selectedProvince.getProvinceName());
+        // 返回按钮
         backButton.setVisibility(View.VISIBLE);
+        //
         cityList = DataSupport.where("provinceid = ?", String.valueOf(selectedProvince.getId()))
                 .find(City.class);
         if (cityList.size() > 0) {
@@ -148,24 +180,40 @@ public class ChooseAreaFragment extends Fragment {
         }
     }
 
+    /**
+     * 访问API
+     *
+     * @param address url地址
+     * @param type    类型
+     */
     private void queryFromServer(String address, final String type) {
+        //显示正在加载。。。
         showProgressDialog();
+        //进行网络请求
         HttpUtils.sendOkHttpRequest(address, new Callback() {
+
+            //请求失败
             @Override
             public void onFailure(Call call, IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        //关闭正在加载的显示
                         closeProgressDialog();
                         Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
+
+            //请求成功
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                //拿到返回的省份数据
                 String responseText = response.body().string();
+                // 判断解析是否成功
                 boolean result = false;
+
                 if ("province".equals(type)) {
                     result = Utility.handleProvinceResponse(responseText);
                 } else if ("city".equals(type)) {
@@ -192,12 +240,20 @@ public class ChooseAreaFragment extends Fragment {
         });
     }
 
+    /**
+     * 在屏幕正中间显示正在加载。。。
+     */
     private void showProgressDialog() {
+        //判断progressDialog是否为空
         if (progressDialog == null) {
+            //新建一个ProgressDialog
             progressDialog = new ProgressDialog(getActivity());
+            //设置显示的信息
             progressDialog.setMessage("正在加载...");
+            //设置点击其他地方不消失
             progressDialog.setCanceledOnTouchOutside(false);
         }
+        //将progressDialog显示在屏幕中
         progressDialog.show();
     }
 

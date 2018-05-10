@@ -24,12 +24,13 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        //初始化操作
         commonTitleText = findViewById(R.id.common_title_text);
         commonTitleText.setText("设置");
         settingLayout = findViewById(R.id.setting_layout);
         autoUpdateTime= findViewById(R.id.auto_update_time);
         autoUpdateSwitch = findViewById(R.id.auto_update_switch);
-        backWeatherButton = findViewById(R.id.back_weather_button);
+        backWeatherButton = findViewById(R.id.back_button);
         backWeatherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,22 +40,29 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor edit = preferences.edit();
+        // 得到是否开启自动更新功能的boolean
         boolean auto_update = preferences.getBoolean("auto_update", false);
+        // 得到自动跟新的时间间隔
         String auto_update_time = preferences.getString("auto_update_time", null);
+        //
         if (auto_update_time != null){
             autoUpdateTime.setText(auto_update_time);
         }
+
         if (auto_update) {
             autoUpdateSwitch.setChecked(auto_update);
         } else {
             autoUpdateSwitch.setChecked(auto_update);
         }
 
+        //
         autoUpdateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //判断是否选中
                 if (isChecked) {
                     autoUpdateSwitch.setSwitchTextAppearance(SettingActivity.this,R.style.switch_true);
                     edit.putBoolean("auto_update", true);
@@ -76,6 +84,10 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param v
+     */
     private void initPopWindow(View v) {
         View view = LayoutInflater.from(SettingActivity.this).inflate(R.layout.setting_popup_item, null, false);
         RadioGroup radioGroup = view.findViewById(R.id.update_time_radio_group);

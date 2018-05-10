@@ -38,12 +38,14 @@ public class ManageCityActivity extends AppCompatActivity {
         cityListLayout = findViewById(R.id.city_list_layout);
         addCityButton = findViewById(R.id.add_city_button);
         commonTitleText = findViewById(R.id.common_title_text);
-        backWeatherButton = findViewById(R.id.back_weather_button);
+        backWeatherButton = findViewById(R.id.back_button);
         commonTitleText.setText("管理城市");
+        //给添加按钮设置监听事件
         addCityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ManageCityActivity.this, SelectCityActivity.class);
+                intent.putExtra("flag", true);
                 startActivity(intent);
                 finish();
             }
@@ -56,6 +58,7 @@ public class ManageCityActivity extends AppCompatActivity {
                 finish();
             }
         });
+        //初始化已经选择过的城市
         initManageCityList();
     }
 
@@ -67,6 +70,7 @@ public class ManageCityActivity extends AppCompatActivity {
         cityListLayout.removeAllViews();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         int weatherListSize = preferences.getInt("weatherListSize", 0);
+        //判断保存城市信息的list是否不为空；有就将数据显示出来；没有就跳到选择城市的页面
         if (weatherListSize > 0) {
             for (int i = 0; i < weatherListSize; i++) {
                 String weatherStr = preferences.getString("weatherItem_" + i, null);
@@ -79,60 +83,70 @@ public class ManageCityActivity extends AppCompatActivity {
         }
 
         if (weatherList != null && weatherList.size() > 0) {
-            for (int i = 0; i < weatherList.size(); i++) {
-                String weatherStr = weatherList.get(i);
-                final Weather weather = Utility.handleWeatherResponse(weatherStr);
-                View view = LayoutInflater.from(this).inflate(R.layout.manage_city_list_item, cityListLayout, false);
-                TextView cityName = view.findViewById(R.id.city_name);
-                ImageView cityItemImg = view.findViewById(R.id.city_item_img);
-                TextView tmpMaxAndMin = view.findViewById(R.id.tmp_max_and_min);
-                cityName.setText(weather.basic.getLocation());
-                cityItemImg.setImageResource(Utility.loadPic(weather.now.getCond_txt(), Utility.LOAD_PIC_FORECAST));
-                Forecast forecast = weather.forecastList.get(0);
-                tmpMaxAndMin.setText(forecast.getTmp_max() + "℃" + " / " + forecast.getTmp_min() + "℃");
-                boolean flag = false;
-                if ((i + 1) % 3 == 1) {
-                    view.setBackgroundResource(R.drawable.beijing_bg);
-                    flag = true;
-                }
-                if (!flag) {
-                    if ((i + 1) % 3 == 0) {
-                        view.setBackgroundResource(R.drawable.qingdao_bg);
-                        flag = true;
-                    }
-                }
-                if (!flag) {
-                    if ((i + 1) % 3 == 2) {
-                        view.setBackgroundResource(R.drawable.xianggang_bg);
-                    }
-                }
-
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(ManageCityActivity.this, WeatherActivity.class);
-                        intent.putExtra("weatherId", weather.basic.getCid());
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-                view.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        initPopWindow(v, weather.basic.getCid());
-                        return true;
-                    }
-                });
-                cityListLayout.addView(view);
-            }
+            //显示天气信息
+            showWeatherInfo();
         }
     }
 
+    private void showWeatherInfo() {
+        for (int i = 0; i < weatherList.size(); i++) {
+            String weatherStr = weatherList.get(i);
+            final Weather weather = Utility.handleWeatherResponse(weatherStr);
+            View view = LayoutInflater.from(this).inflate(R.layout.manage_city_list_item, cityListLayout, false);
+            TextView cityName = view.findViewById(R.id.city_name);
+            ImageView cityItemImg = view.findViewById(R.id.city_item_img);
+            TextView tmpMaxAndMin = view.findViewById(R.id.tmp_max_and_min);
+            cityName.setText(weather.basic.getLocation());
+            cityItemImg.setImageResource(Utility.loadPic(weather.now.getCond_txt(), Utility.LOAD_PIC_FORECAST));
+            Forecast forecast = weather.forecastList.get(0);
+            tmpMaxAndMin.setText(forecast.getTmp_max() + "℃" + " / " + forecast.getTmp_min() + "℃");
+            boolean flag = false;
+            if ((i + 1) % 3 == 1) {
+                view.setBackgroundResource(R.drawable.beijing_bg);
+                flag = true;
+            }
+            if (!flag) {
+                if ((i + 1) % 3 == 0) {
+                    view.setBackgroundResource(R.drawable.qingdao_bg);
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                if ((i + 1) % 3 == 2) {
+                    view.setBackgroundResource(R.drawable.xianggang_bg);
+                }
+            }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ManageCityActivity.this, WeatherActivity.class);
+                    intent.putExtra("weatherId", weather.basic.getCid());
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    initPopWindow(v, weather.basic.getCid());
+                    return true;
+                }
+            });
+            cityListLayout.addView(view);
+        }
+    }
+
+    /**
+     *
+     * @param v
+     * @param weatherId
+     */
     private void initPopWindow(View v, final String weatherId) {
         View view = LayoutInflater.from(ManageCityActivity.this).inflate(R.layout.manage_city_popup_item, null, false);
         TextView deleteCityButton = view.findViewById(R.id.delete_city_button);
         TextView cityToTop = view.findViewById(R.id.city_to_top);
-        if(weatherList.get(0).contains(weatherId)){
+        if (weatherList.get(0).contains(weatherId)) {
             cityToTop.setVisibility(View.GONE);
         }
         //1.构造一个PopupWindow，参数依次是加载的View，宽高
@@ -205,7 +219,7 @@ public class ManageCityActivity extends AppCompatActivity {
                 List<String> tempList = new ArrayList<>();
                 for (String weatherStr : weatherList) {
                     if (weatherStr.contains(weatherId)) {
-                        tempList.add(0,weatherStr);
+                        tempList.add(0, weatherStr);
                         continue;
                     }
                     tempList.add(weatherStr);

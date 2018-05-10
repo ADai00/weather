@@ -30,19 +30,25 @@ public class Utility {
     public static final String LOAD_PIC_HOURLY = "hourly";
 
     /**
-     * 解析和处理服务器返回的省级数据
+     * 解析和处理服务器返回的省级数据并保存到数据库
      * @param response 解析数据
      * @return
      */
     public static boolean handleProvinceResponse(String response) {
         if (!TextUtils.isEmpty(response)) {
             try {
+                // 将返回的数据解析成JSON数组
                 JSONArray allProvince = new JSONArray(response);
+                // 遍历JSON数组
                 for (int i = 0; i < allProvince.length(); i++) {
+                    //得到JSON数组中的第i个Json对象
                     JSONObject jsonObject = allProvince.getJSONObject(i);
+                    //新建一个省份的实体类
                     Province province = new Province();
+                    //将JSON对象中的数据保存到实体类中
                     province.setProvinceName(jsonObject.getString("name"));
                     province.setProvinceCode(jsonObject.getInt("id"));
+                    //将数据保存到数据库
                     province.save();
                 }
                 return true;
@@ -105,6 +111,11 @@ public class Utility {
         return false;
     }
 
+    /**
+     * 解析
+     * @param response
+     * @return
+     */
     public static Weather handleWeatherResponse(String response){
         try {
             JSONObject jsonObject = new JSONObject(response);

@@ -15,16 +15,30 @@
             android:textColor="#fff"
             android:textSize="20sp"/>
 
-    <TextView
-            android:id="@+id/weather_setting"
+    <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/weather_setting"
-            android:textColor="#fff"
-            android:textSize="20sp"/>
+            android:layout_centerVertical="true">
+
+        <TextView
+                android:id="@+id/weather_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/weather_calendar"
+                android:textColor="#fff"
+                android:textSize="20sp"/>
+
+        <TextView
+                android:id="@+id/weather_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/weather_setting"
+                android:textColor="#fff"
+                android:textSize="20sp"/>
+    </LinearLayout>
 
 
 </RelativeLayout>

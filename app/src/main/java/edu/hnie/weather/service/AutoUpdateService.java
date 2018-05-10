@@ -28,9 +28,13 @@ public class AutoUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //得到更新时间间隔
         String auto_update_time = preferences.getString("auto_update_time", null);
+        // 更新天气
         updateWeather();
+        // 启动定时任务
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         int anHour = 60 * 60 * 1000;
         if (auto_update_time != null) {
